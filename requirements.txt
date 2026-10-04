@@ -1,0 +1,6 @@
+torch>=2.6
+fastapi>=0.115
+uvicorn[standard]>=0.34
+PyJWT>=2.10
+requests>=2.32
+cryptography>=44
