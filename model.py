@@ -57,7 +57,7 @@ class Block(nn.Module):
         return x
 
 class PersonaGPT(nn.Module):
-    def __init__(self, vocab_size=256, block_size=384, n_embd=192, n_head=6, n_layer=6, dropout=0.0):
+    def __init__(self, vocab_size=256, block_size=512, n_embd=448, n_head=8, n_layer=8, dropout=0.0):
         super().__init__()
         self.block_size = block_size
         self.token_emb = nn.Embedding(vocab_size, n_embd)

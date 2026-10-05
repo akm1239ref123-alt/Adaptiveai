@@ -9,13 +9,13 @@ from persona.model import PersonaGPT
 from persona.tokenizer import ByteTokenizer
 
 ROOT = Path(__file__).parent
-CK_PATH = ROOT / 'checkpoints' / 'persona-v2.pt'
-TOKENIZER_PATH = ROOT / 'checkpoints' / 'tokenizer.json'
+CK_PATH = ROOT / 'checkpoints' / 'persona-20m.pt'
+TOKENIZER_PATH = ROOT / 'checkpoints' / 'tokenizer-20m.json'
 ck = torch.load(CK_PATH, map_location='cpu', weights_only=False)
 tok = ByteTokenizer.load(TOKENIZER_PATH)
 model = PersonaGPT(**ck['config']); model.load_state_dict(ck['model']); model.eval()
 
-app = FastAPI(title='Persona', version='1.0')
+app = FastAPI(title='Persona', version='20M')
 OWNER_EMAIL = os.getenv('PERSONA_OWNER_EMAIL', 'akm1239ref123@gmail.com').strip().lower()
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID', '').strip()
 ANON_MAX_TOKENS = int(os.getenv('PERSONA_ANON_MAX_TOKENS', '192'))
@@ -56,7 +56,7 @@ def authenticate(token: str | None):
 def health():
     return {
         'ok': True,
-        'model': 'Persona v2.0',
+        'model': 'Persona 20M',
         'parameters': sum(p.numel() for p in model.parameters()),
         'owner_mode': 'Google verified',
         'owner_email': OWNER_EMAIL,
@@ -80,7 +80,7 @@ def chat(req: ChatRequest):
     answer = text[len(tok.decode(ids)):].split('\nUser:')[0].strip()
     return {
         'text': answer,
-        'model': 'Persona v2.0',
+        'model': 'Persona 20M',
         'authenticated': auth['authenticated'],
         'owner': auth['owner'],
         'account': auth['email'],

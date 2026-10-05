@@ -1,9 +1,20 @@
-# Persona v2 deployment
+# Deployment
 
-## Backend
-This package contains a FastAPI backend and a Dockerfile. Railway can deploy the Python service from a GitHub repository or Dockerfile; the service needs `GOOGLE_CLIENT_ID` only if Google One Tap owner verification is desired.
+## 1. Vercel frontend
 
-## Frontend
-The Next.js app in `web/` is intentionally chat-only. It has no header, account panel, settings button, or extra controls. If `NEXT_PUBLIC_GOOGLE_CLIENT_ID` is configured, Google One Tap is invoked silently rather than rendering a sign-in button.
+Import this GitHub repository into Vercel. Keep **Root Directory empty** because the Next.js app is at the repository root.
 
-Set `PERSONA_API_URL` on the frontend to the public Persona backend URL.
+Set:
+`PERSONA_API_URL=https://YOUR-BACKEND-URL`
+
+## 2. Persona backend
+
+Deploy `persona-backend/` using Docker/Python hosting. The backend starts with:
+
+`uvicorn server:app --host 0.0.0.0 --port $PORT`
+
+Required environment variables:
+- `GOOGLE_CLIENT_ID`
+- `PERSONA_OWNER_EMAIL` (defaults to `akm1239ref123@gmail.com`)
+
+The backend needs `checkpoints/persona-20m.pt` before it can start.
